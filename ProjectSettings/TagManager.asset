@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - DamageObject
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -59,7 +60,4 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 2545581999
-    locked: 0
-  - name: Player
-    uniqueID: 2949414021
     locked: 0
