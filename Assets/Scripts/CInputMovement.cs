@@ -6,34 +6,36 @@ using UnityEngine;
 public class CInputMovement : MonoBehaviour
 {
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode holdToWalk = KeyCode.LeftShift;
 
-    public float speed = 6.4f;
+    public LayerMask groundLayer = 0;
+    public Vector2 groundCheckOffset = Vector2.zero;
+    public float radius = 1.0f;
+
+    public float speed = 2.0f;
     public float keyHoldSecond = 0.5f;
 
     [Header("Sensitive Jump 사용 여부")]
     public bool useSensitiveJump = true;
 
     [Header("일반 점프용")]
-    public float jumpForce = 20.0f;
+    public float jumpForce = 3.0f;
 
     [Header("Sensitive Jump 시작 Force")]
-    public float startJumpForce = 10.0f;
+    public float startJumpForce = 2.0f;
     [Header("Sensitive Jump 가중 Force")]
-    public float additiveJumpForce = 50.0f;
+    public float additiveJumpForce = 7.0f;
 
-    public int maxJumpCount = 1;
+    public int maxJumpCount = 2;
 
-    public bool isJump = false;
-    public bool isGround = false;
-    public bool isJumpKeyHeld = false;
-
-    private Rigidbody2D _rigidbody2D;
-    private Animator _animator;
-    private SpriteRenderer _spriteRenderer;
+    private Rigidbody2D _rigidbody2D = null;
+    private Animator _animator = null;
+    private SpriteRenderer _spriteRenderer = null;
+    private BoxCollider2D _boxCollider = null;
 
     private bool _isJumpKeyHeld = false;
-    private bool _isJump = false;
     private bool _isGround = false;
+    private bool _isJump = false;
 
     private float _keyHoldElipse = 0.0f;
 
@@ -44,11 +46,12 @@ public class CInputMovement : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _boxCollider = GetComponent<BoxCollider2D>();
     }
 
     private void Start()
     {
-
+        _animator.SetBool("Ground", _isGround);
     }
 
     private void Update()
@@ -62,14 +65,6 @@ public class CInputMovement : MonoBehaviour
         {
             InputJump();
         }
-
-        isJump = _isJump;
-        isGround = _isGround;
-        isJumpKeyHeld = _isJumpKeyHeld;
-    }
-
-    private void FixedUpdate()
-    {
     }
 
     private void InputMove()
@@ -86,6 +81,12 @@ public class CInputMovement : MonoBehaviour
             _animator.SetBool("Move", false);
         }
 
+        if (Input.GetKey(holdToWalk))
+        {
+            h *= 0.5f;
+            absHorizon = 0.0f;
+        }
+
         _rigidbody2D.velocity = new Vector2(h * speed, _rigidbody2D.velocity.y);
         _animator.SetFloat("Horizontal", absHorizon);
         _animator.SetFloat("Vertical", _rigidbody2D.velocity.y);
@@ -100,7 +101,6 @@ public class CInputMovement : MonoBehaviour
             {
                 ++_currentJumpCount;
                 Jump();
-                _isJump = true;
             }
         }
     }
@@ -110,6 +110,7 @@ public class CInputMovement : MonoBehaviour
         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, 0.0f);
         _rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         _animator.SetTrigger("Jump");
+        _isJump = true;
     }
     #endregion
 
@@ -135,7 +136,7 @@ public class CInputMovement : MonoBehaviour
         }
 
         // 현재 최대 점프수를 넘지 않고 점프키를 누르고 있는 동안
-        if (Input.GetKey(jumpKey) && _currentJumpCount <= maxJumpCount)
+        if (_isJumpKeyHeld && _currentJumpCount <= maxJumpCount)
         {
             if (_keyHoldElipse < keyHoldSecond)
             {
@@ -146,7 +147,7 @@ public class CInputMovement : MonoBehaviour
     }
     #endregion
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.tag == "Ground")
         {
@@ -157,7 +158,7 @@ public class CInputMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.transform.tag == "Ground")
         {

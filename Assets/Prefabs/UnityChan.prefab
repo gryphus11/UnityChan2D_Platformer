@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4773848516031822}
   - component: {fileID: 95170141608253640}
   - component: {fileID: 212002934118277736}
-  - component: {fileID: 60959694970528002}
   - component: {fileID: 50824905615597814}
+  - component: {fileID: 61379239442855842}
   - component: {fileID: 114328477790875056}
+  - component: {fileID: 61530367709392344}
   m_Layer: 9
   m_Name: UnityChan
   m_TagString: Player
@@ -64,19 +65,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!60 &60959694970528002
-PolygonCollider2D:
+--- !u!61 &61379239442855842
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1228544185926382}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2dc15e688a0e66f4da9325c0753aef24, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.03, y: -0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.44}
@@ -86,20 +87,34 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.03, y: 0.2232}
-      - {x: -0.03, y: 0.2232}
-      - {x: -0.14999999, y: 0.18319999}
-      - {x: -0.17999999, y: 0.043199997}
-      - {x: -0.19, y: -0.006800003}
-      - {x: -0.19, y: -0.0868}
-      - {x: -0.13, y: -0.2168}
-      - {x: -0.08, y: -0.2768}
-      - {x: 0.049999997, y: -0.2768}
-      - {x: 0.06, y: -0.24679999}
-      - {x: 0.089999996, y: -0.1468}
-      - {x: 0.089999996, y: 0.13319999}
+  serializedVersion: 2
+  m_Size: {x: 0.17, y: 0.39}
+  m_EdgeRadius: 0
+--- !u!61 &61530367709392344
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1228544185926382}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.03, y: -0.3}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.44}
+    oldSize: {x: 0.72, y: 0.72}
+    newSize: {x: 0.72, y: 0.72}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1}
+  m_EdgeRadius: 0
 --- !u!95 &95170141608253640
 Animator:
   serializedVersion: 3
@@ -130,6 +145,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpKey: 32
+  holdToWalk: 304
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  groundCheckOffset: {x: 0, y: -0.3}
+  radius: 0.03
   speed: 2
   keyHoldSecond: 0.5
   useSensitiveJump: 1
@@ -137,9 +158,6 @@ MonoBehaviour:
   startJumpForce: 2
   additiveJumpForce: 7
   maxJumpCount: 2
-  isJump: 0
-  isGround: 0
-  isJumpKeyHeld: 0
 --- !u!212 &212002934118277736
 SpriteRenderer:
   m_ObjectHideFlags: 1
