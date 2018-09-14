@@ -34,6 +34,7 @@ public class CInputMovement : MonoBehaviour
     private BoxCollider2D _boxCollider = null;
 
     private bool _isJumpKeyHeld = false;
+    [SerializeField]
     private bool _isGround = false;
     private bool _isJump = false;
 
