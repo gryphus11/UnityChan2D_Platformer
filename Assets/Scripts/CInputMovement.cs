@@ -70,11 +70,13 @@ public class CInputMovement : MonoBehaviour
 
     private void InputMove()
     {
-        float h = Input.GetAxisRaw("Horizontal");
+        float h = Input.GetAxis("Horizontal");
         float absHorizon = Mathf.Abs(h);
+        bool isAttack = _animator.GetBool("IsAttack");
+
         if (absHorizon > 0)
         {
-            _spriteRenderer.flipX = (h == 1) ? false : true;
+            _spriteRenderer.flipX = (h > 0.0f) ? false : true;
             _animator.SetBool("Move", true);
         }
         else
